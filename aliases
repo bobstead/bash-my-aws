@@ -20,6 +20,7 @@ alias _bma_stack_diff_template='~/.bash-my-aws/bin/bma _bma_stack_diff_template'
 alias _bma_stack_name_arg='~/.bash-my-aws/bin/bma _bma_stack_name_arg'
 alias _bma_stack_params_arg='~/.bash-my-aws/bin/bma _bma_stack_params_arg'
 alias _bma_stack_template_arg='~/.bash-my-aws/bin/bma _bma_stack_template_arg'
+alias access='~/.bash-my-aws/bin/bma access'
 alias asg-capacity='~/.bash-my-aws/bin/bma asg-capacity'
 alias asg-desired-size-set='~/.bash-my-aws/bin/bma asg-desired-size-set'
 alias asg-instances='~/.bash-my-aws/bin/bma asg-instances'
@@ -65,6 +66,7 @@ alias elbv2-target-groups='~/.bash-my-aws/bin/bma elbv2-target-groups'
 alias elbv2s='~/.bash-my-aws/bin/bma elbv2s'
 alias hosted-zone-ns-records='~/.bash-my-aws/bin/bma hosted-zone-ns-records'
 alias hosted-zones='~/.bash-my-aws/bin/bma hosted-zones'
+alias elbs='~/.bash-my-aws/bin/bma elbs'
 alias iam-role-principal='~/.bash-my-aws/bin/bma iam-role-principal'
 alias iam-roles='~/.bash-my-aws/bin/bma iam-roles'
 alias iam-users='~/.bash-my-aws/bin/bma iam-users'
@@ -119,7 +121,7 @@ alias rds-db-clusters='~/.bash-my-aws/bin/bma rds-db-clusters'
 alias rds-db-instances='~/.bash-my-aws/bin/bma rds-db-instances'
 alias region-each='~/.bash-my-aws/bin/bma region-each'
 alias regions='~/.bash-my-aws/bin/bma regions'
-alias skim-stdin='~/.bash-my-aws/bin/bma skim-stdin'
+alias role-policies='~/.bash-my-aws/bin/bma role-policies'
 alias stack-arn='~/.bash-my-aws/bin/bma stack-arn'
 alias stack-asg-instances='~/.bash-my-aws/bin/bma stack-asg-instances'
 alias stack-asgs='~/.bash-my-aws/bin/bma stack-asgs'
@@ -163,15 +165,4 @@ alias vpc-rds='~/.bash-my-aws/bin/bma vpc-rds'
 alias vpc-route-tables='~/.bash-my-aws/bin/bma vpc-route-tables'
 alias vpc-subnets='~/.bash-my-aws/bin/bma vpc-subnets'
 alias vpcs='~/.bash-my-aws/bin/bma vpcs'
-
-# We'll find a less suprising place for this in future
-# region() needs to be a function in order to let it
-# set AWS_DEFAULT_REGION in the current shell
-function region() { 
-    local inputs=$(skim-stdin "$@");
-    if [[ -z "$inputs" ]]; then
-        echo "${AWS_DEFAULT_REGION:-'AWS_DEFAULT_REGION not set'}";
-    else
-        export AWS_DEFAULT_REGION="$inputs";
-    fi
-}
+unalias region

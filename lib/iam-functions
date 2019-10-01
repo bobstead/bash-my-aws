@@ -82,3 +82,24 @@ iam-users() {
   LC_ALL=C sort -b -k 3 |
   column -s$'\t' -t
 }
+
+role-policies() {
+  local role=$1
+  [[ -z ${role} ]] && __bma_usage "role-policies <role-name>"
+  for policy in $(aws iam list-role-policies --role-name "$role" --query 'PolicyNames' --output text | xargs | tr " " "\n"); do
+    access "${role}" "${policy}"
+    echo "\n---\n"
+  done
+}
+
+access() {
+  local roleName=$1
+  local policyName=$2
+  [[ -z ${roleName} ]] || [[ -z ${policyName} ]] && __bma_usage "access <role-name> <role-policy-name>"
+
+  aws iam get-role-policy \
+    --role-name ${roleName} \
+    --policy-name ${policyName} \
+    --output text |
+    columnise
+}
