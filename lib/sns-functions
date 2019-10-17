@@ -1,0 +1,69 @@
+#!/bin/bash
+# shellcheck disable=SC2046
+# shellcheck disable=SC2155
+#
+# sns-functions
+# set -x
+
+__get_json_value() {
+  echo "$2" | jq -r "$1"
+}
+
+topics() {
+  local filters=$(__bma_read_filters $@)
+
+  local json=$(aws sns list-topics --output json)
+  local next_token=$(__get_json_value ".NextToken" "$json")
+  local output=$(__get_json_value ".Topics[].TopicArn" "$json")
+  
+  while [[ -n "$next_token" && "$next_token" != "null" ]]
+  do
+    json=$(
+      aws sns list-topics \
+        --starting-token "$next_token" \
+        --output json
+    )
+    next_token=$(__get_json_value ".NextToken" "$json")
+    local page=$(__get_json_value ".Topics[].TopicArn" "$json")
+    output="$output\n$page"
+  done
+  echo "$output" |
+  grep -E -- "$filters" |
+  sort -b
+}
+
+topic-subscriptions() {
+  local topic_arn=$(__bma_read_inputs $@)
+  local filters=$(__bma_read_filters $@)
+
+  [[ -z "$topic_arn" ]] && __bma_usage "topic_arn" && return 1
+
+  aws sns list-subscriptions-by-topic \
+  --topic-arn "$topic_arn" \
+  --output json |
+  jq ".Subscriptions | sort_by(.Protocol)"
+}
+
+subscription-attributes() {
+  local subscription_arn=$(__bma_read_inputs $@)
+  [[ -z "$subscription_arn" ]] && __bma_usage "subcription_arn" && return 1
+
+  aws sns get-subscription-attributes \
+  --subscription-arn "$subscription_arn" \
+  --output json
+}
+
+subscription-unsubscribe() {
+  local subscription_arn=$(__bma_read_inputs $@)
+  [[ -z "$subscription_arn" ]] && __bma_usage "subcription_arn" && return 1
+
+  echo "You are about to unsubscribe the following subscription:"
+  subscription-attributes "$subscription_arn" | jq ".Attributes"
+  [ -t 0 ] || exec </dev/tty # reattach keyboard to STDIN
+  local regex_yes="^[Yy]$"
+  read -p "Are you sure you want to continue? " -n 1 -r
+  echo
+  if [[ $REPLY =~ $regex_yes ]]; then
+    aws sns unsubscribe --subscriptiQon-arn "$subscription_arn"
+  fi
+}
