@@ -22,13 +22,12 @@ iam-roles() {
   local filters=$(__bma_read_filters $@)
 
   aws iam list-roles    \
-    --output text       \
-    --query "
-      Roles[${role_names:+?contains(['${role_names// /"','"}'], RoleName)}].[
-        RoleName,
-        Arn,
-        CreateDate
-    ]"                  |
+    --query 'Roles[].[
+      RoleName,
+      Arn,
+      CreateDate
+    ]'                  \
+    --output text       |
   grep -E -- "$filters" |
   LC_ALL=C sort -b -k 3 |
   column -s$'\t' -t
@@ -100,6 +99,6 @@ access() {
   aws iam get-role-policy \
     --role-name ${roleName} \
     --policy-name ${policyName} \
-    --output text |
-    columnise
+    --output json |
+    jq
 }

@@ -23,18 +23,10 @@ queue-attributes() {
   output=$(for queue_url in $queue_urls; do
     aws sqs get-queue-attributes \
       $([[ -n ${queue_url} ]] && echo --queue-url ${queue_url}) \
-      --attribute-names \
-        QueueArn \
-        ApproximateNumberOfMessages \
-        ApproximateNumberOfMessagesNotVisible \
-        ApproximateNumberOfMessagesDelayed \
-      --output text |
-      colrm 1 12
+      --attribute-names All \
+      --output json
   done)
-  echo "$output" |
-  awk 'BEGIN { print "VISIBLE\tNOT-VISIBLE\tDELAYED\tARN"} {print $0}' |
-  sort -b -k 4 |
-  column -s$'\t' -t 
+  echo "$output" | jq -s
 }
 
 queue-purge() {
