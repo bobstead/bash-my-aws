@@ -26,7 +26,7 @@ iam-roles() {
     --query "
       Roles[${role_names:+?contains(['${role_names// /"','"}'], RoleName)}].[
         RoleName,
-        RoleId,
+        Arn,
         CreateDate
     ]"                  |
   grep -E -- "$filters" |
@@ -82,4 +82,3 @@ iam-users() {
   LC_ALL=C sort -b -k 3 |
   column -s$'\t' -t
 }
-
