@@ -7,7 +7,6 @@ alias __bma_read_filters='~/.bash-my-aws/bin/bma __bma_read_filters'
 alias __bma_read_inputs='~/.bash-my-aws/bin/bma __bma_read_inputs'
 alias __bma_read_stdin='~/.bash-my-aws/bin/bma __bma_read_stdin'
 alias __bma_usage='~/.bash-my-aws/bin/bma __bma_usage'
-alias __get_json_value='~/.bash-my-aws/bin/bma __get_json_value'
 alias _bma_derive_params_from_stack_and_template='~/.bash-my-aws/bin/bma _bma_derive_params_from_stack_and_template'
 alias _bma_derive_params_from_template='~/.bash-my-aws/bin/bma _bma_derive_params_from_template'
 alias _bma_derive_stack_from_params='~/.bash-my-aws/bin/bma _bma_derive_stack_from_params'
@@ -21,7 +20,6 @@ alias _bma_stack_diff_template='~/.bash-my-aws/bin/bma _bma_stack_diff_template'
 alias _bma_stack_name_arg='~/.bash-my-aws/bin/bma _bma_stack_name_arg'
 alias _bma_stack_params_arg='~/.bash-my-aws/bin/bma _bma_stack_params_arg'
 alias _bma_stack_template_arg='~/.bash-my-aws/bin/bma _bma_stack_template_arg'
-alias access='~/.bash-my-aws/bin/bma access'
 alias asg-capacity='~/.bash-my-aws/bin/bma asg-capacity'
 alias asg-desired-size-set='~/.bash-my-aws/bin/bma asg-desired-size-set'
 alias asg-instances='~/.bash-my-aws/bin/bma asg-instances'
@@ -67,7 +65,6 @@ alias elbv2-target-groups='~/.bash-my-aws/bin/bma elbv2-target-groups'
 alias elbv2s='~/.bash-my-aws/bin/bma elbv2s'
 alias hosted-zone-ns-records='~/.bash-my-aws/bin/bma hosted-zone-ns-records'
 alias hosted-zones='~/.bash-my-aws/bin/bma hosted-zones'
-alias elbs='~/.bash-my-aws/bin/bma elbs'
 alias iam-role-principal='~/.bash-my-aws/bin/bma iam-role-principal'
 alias iam-roles='~/.bash-my-aws/bin/bma iam-roles'
 alias iam-users='~/.bash-my-aws/bin/bma iam-users'
@@ -118,13 +115,11 @@ alias launch-configuration-asgs='~/.bash-my-aws/bin/bma launch-configuration-asg
 alias launch-configurations='~/.bash-my-aws/bin/bma launch-configurations'
 alias log-groups='~/.bash-my-aws/bin/bma log-groups'
 alias pcxs='~/.bash-my-aws/bin/bma pcxs'
-alias queue-attributes='~/.bash-my-aws/bin/bma queue-attributes'
-alias queue-purge='~/.bash-my-aws/bin/bma queue-purge'
-alias queues='~/.bash-my-aws/bin/bma queues'
+alias rds-db-clusters='~/.bash-my-aws/bin/bma rds-db-clusters'
 alias rds-db-instances='~/.bash-my-aws/bin/bma rds-db-instances'
 alias region-each='~/.bash-my-aws/bin/bma region-each'
 alias regions='~/.bash-my-aws/bin/bma regions'
-alias role-policies='~/.bash-my-aws/bin/bma role-policies'
+alias skim-stdin='~/.bash-my-aws/bin/bma skim-stdin'
 alias stack-arn='~/.bash-my-aws/bin/bma stack-arn'
 alias stack-asg-instances='~/.bash-my-aws/bin/bma stack-asg-instances'
 alias stack-asgs='~/.bash-my-aws/bin/bma stack-asgs'
@@ -151,16 +146,13 @@ alias stack-update='~/.bash-my-aws/bin/bma stack-update'
 alias stack-validate='~/.bash-my-aws/bin/bma stack-validate'
 alias stacks='~/.bash-my-aws/bin/bma stacks'
 alias sts-assume-role='~/.bash-my-aws/bin/bma sts-assume-role'
-alias subnets='~/.bash-my-aws/bin/bma subnets'
-<<<<<<< HEAD
-alias target-group-targets='~/.bash-my-aws/bin/bma target-group-targets'
-alias target-groups='~/.bash-my-aws/bin/bma target-groups'
-=======
+alias subnets='~/.bash-my-aws/bin/bma subnets'=======
 alias subscription-attributes='~/.bash-my-aws/bin/bma subscription-attributes'
 alias subscription-unsubscribe='~/.bash-my-aws/bin/bma subscription-unsubscribe'
+alias target-group-targets='~/.bash-my-aws/bin/bma target-group-targets'
+alias target-groups='~/.bash-my-aws/bin/bma target-groups'
 alias topic-subscriptions='~/.bash-my-aws/bin/bma topic-subscriptions'
 alias topics='~/.bash-my-aws/bin/bma topics'
->>>>>>> ee2f572 (adding sns functions)
 alias vpc-az-count='~/.bash-my-aws/bin/bma vpc-az-count'
 alias vpc-azs='~/.bash-my-aws/bin/bma vpc-azs'
 alias vpc-default-delete='~/.bash-my-aws/bin/bma vpc-default-delete'
@@ -175,4 +167,15 @@ alias vpc-rds='~/.bash-my-aws/bin/bma vpc-rds'
 alias vpc-route-tables='~/.bash-my-aws/bin/bma vpc-route-tables'
 alias vpc-subnets='~/.bash-my-aws/bin/bma vpc-subnets'
 alias vpcs='~/.bash-my-aws/bin/bma vpcs'
-unalias region
+
+# We'll find a less suprising place for this in future
+# region() needs to be a function in order to let it
+# set AWS_DEFAULT_REGION in the current shell
+function region() { 
+    local inputs=$(skim-stdin "$@");
+    if [[ -z "$inputs" ]]; then
+        echo "${AWS_DEFAULT_REGION:-'AWS_DEFAULT_REGION not set'}";
+    else
+        AWS_DEFAULT_REGION="$inputs";
+    fi
+}
