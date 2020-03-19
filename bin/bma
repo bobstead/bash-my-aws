@@ -37,6 +37,18 @@ if [[ -n $BMA_AWSCLI ]]; then
     $BMA_AWSCLI "$@"
   }
   export aws
+elif [[ $BMA_USE_DOCKER == 'true' ]]; then
+  function aws(){
+    args=( "$@" )
+    docker run -it --rm \
+      -v "${HOME}/.aws:/root/.aws" \
+      -e AWS_PROFILE \
+      -e AWS_DEFAULT_REGION \
+      -e AWS_REGION \
+      --log-driver none \
+      --name aws \
+      awscli "${args[@]}"
+  }
 fi
 
 # Print awscli version info to STDERR (if in debug mode)
