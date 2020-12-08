@@ -45,3 +45,16 @@ queue-purge() {
     done
   fi
 }
+
+queue-visible-messages() {
+  local queue_urls="$(__bma_read_inputs $@)"
+  [[ -z "$queue_urls" ]] && __bma_usage "queue-url" && return 1
+
+  output=$(for queue_url in $queue_urls; do
+    aws sqs get-queue-attributes \
+      $([[ -n ${queue_url} ]] && echo --queue-url ${queue_url}) \
+      --attribute-names QueueArn ApproximateNumberOfMessages \
+      --output json
+  done)
+  echo "$output" |  jq '.[].Attributes | {(.QueueArn): .ApproximateNumberOfMessages}' -s | jq -s add
+}
