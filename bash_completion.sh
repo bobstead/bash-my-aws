@@ -1,3 +1,6 @@
+# DO NOT MANUALLY MODIFY THIS FILE.
+# Use 'scripts/build' to regenerate if required.
+
 bma_path="${HOME}/.bash-my-aws"
 _bma_asgs_completion() {
   local command="$1"
@@ -80,6 +83,13 @@ _bma_stacks_completion() {
   fi
   return 0
 }
+_bma_target-groups_completion() {
+  local command="$1"
+  local word="$2"
+  local options=$(bma target-groups | awk '{ print $1 }')
+  COMPREPLY=($(compgen -W "${options}" -- ${word}))
+  return 0
+}
 _bma_vpcs_completion() {
   local command="$1"
   local word="$2"
@@ -103,7 +113,7 @@ _bma_completion() {
 _bma_functions_completion() {
   local word all_funcs
   word="$1"
-  all_funcs=$(echo "type" && cat "${bma_path}/functions")
+  all_funcs=$(echo "type" && cat "${bma_path}/functions" | command grep -v "^#")
   COMPREPLY=($(compgen -W "${all_funcs}" -- ${word}))
   return
 }
@@ -154,6 +164,7 @@ complete -F _bma_elbs_completion elbs
 complete -F _bma_elbv2s_completion elbv2-azs
 complete -F _bma_elbv2s_completion elbv2-dnsname
 complete -F _bma_elbv2s_completion elbv2-subnets
+complete -F _bma_elbv2s_completion elbv2-target-groups
 complete -F _bma_elbv2s_completion elbv2s
 complete -F _bma_instances_completion instance-asg
 complete -F _bma_instances_completion instance-az
@@ -164,6 +175,7 @@ complete -F _bma_instances_completion instance-iam-profile
 complete -F _bma_instances_completion instance-ip
 complete -F _bma_instances_completion instance-ssh
 complete -F _bma_instances_completion instance-ssh-details
+complete -F _bma_instances_completion instance-ssm
 complete -F _bma_instances_completion instance-stack
 complete -F _bma_instances_completion instance-start
 complete -F _bma_instances_completion instance-state
@@ -201,6 +213,8 @@ complete -F _bma_stacks_completion stack-tail
 complete -F _bma_stacks_completion stack-template
 complete -F _bma_stacks_completion stack-update
 complete -F _bma_stacks_completion stacks
+complete -F _bma_target-groups_completion target-group-targets
+complete -F _bma_target-groups_completion target-groups
 complete -F _bma_vpcs_completion vpc-az-count
 complete -F _bma_vpcs_completion vpc-azs
 complete -F _bma_vpcs_completion vpc-endpoints
