@@ -1,5 +1,7 @@
-# GENERATED ALIASES FOR BASH-MY-AWS
+# DO NOT MANUALLY MODIFY THIS FILE.
+# Use 'scripts/build' to regenerate if required.
 
+alias __bma-using-aws-cli-v1='~/.bash-my-aws/bin/bma __bma-using-aws-cli-v1'
 alias __bma_error='~/.bash-my-aws/bin/bma __bma_error'
 alias __bma_read_filters='~/.bash-my-aws/bin/bma __bma_read_filters'
 alias __bma_read_inputs='~/.bash-my-aws/bin/bma __bma_read_inputs'
@@ -59,6 +61,7 @@ alias elbs='~/.bash-my-aws/bin/bma elbs'
 alias elbv2-azs='~/.bash-my-aws/bin/bma elbv2-azs'
 alias elbv2-dnsname='~/.bash-my-aws/bin/bma elbv2-dnsname'
 alias elbv2-subnets='~/.bash-my-aws/bin/bma elbv2-subnets'
+alias elbv2-target-groups='~/.bash-my-aws/bin/bma elbv2-target-groups'
 alias elbv2s='~/.bash-my-aws/bin/bma elbv2s'
 alias hosted-zone-ns-records='~/.bash-my-aws/bin/bma hosted-zone-ns-records'
 alias hosted-zones='~/.bash-my-aws/bin/bma hosted-zones'
@@ -76,6 +79,7 @@ alias instance-iam-profile='~/.bash-my-aws/bin/bma instance-iam-profile'
 alias instance-ip='~/.bash-my-aws/bin/bma instance-ip'
 alias instance-ssh='~/.bash-my-aws/bin/bma instance-ssh'
 alias instance-ssh-details='~/.bash-my-aws/bin/bma instance-ssh-details'
+alias instance-ssm='~/.bash-my-aws/bin/bma instance-ssm'
 alias instance-stack='~/.bash-my-aws/bin/bma instance-stack'
 alias instance-start='~/.bash-my-aws/bin/bma instance-start'
 alias instance-state='~/.bash-my-aws/bin/bma instance-state'
@@ -143,6 +147,8 @@ alias stack-validate='~/.bash-my-aws/bin/bma stack-validate'
 alias stacks='~/.bash-my-aws/bin/bma stacks'
 alias sts-assume-role='~/.bash-my-aws/bin/bma sts-assume-role'
 alias subnets='~/.bash-my-aws/bin/bma subnets'
+alias target-group-targets='~/.bash-my-aws/bin/bma target-group-targets'
+alias target-groups='~/.bash-my-aws/bin/bma target-groups'
 alias vpc-az-count='~/.bash-my-aws/bin/bma vpc-az-count'
 alias vpc-azs='~/.bash-my-aws/bin/bma vpc-azs'
 alias vpc-default-delete='~/.bash-my-aws/bin/bma vpc-default-delete'
@@ -166,6 +172,6 @@ function region() {
     if [[ -z "$inputs" ]]; then
         echo "${AWS_DEFAULT_REGION:-'AWS_DEFAULT_REGION not set'}";
     else
-        AWS_DEFAULT_REGION="$inputs";
+        export AWS_DEFAULT_REGION="$inputs";
     fi
 }

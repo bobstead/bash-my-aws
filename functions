@@ -1,3 +1,7 @@
+# DO NOT MANUALLY MODIFY THIS FILE.
+# Use 'scripts/build' to regenerate if required.
+
+__bma-using-aws-cli-v1
 __bma_error
 __bma_read_filters
 __bma_read_inputs
@@ -57,6 +61,7 @@ elbs
 elbv2-azs
 elbv2-dnsname
 elbv2-subnets
+elbv2-target-groups
 elbv2s
 hosted-zone-ns-records
 hosted-zones
@@ -74,6 +79,7 @@ instance-iam-profile
 instance-ip
 instance-ssh
 instance-ssh-details
+instance-ssm
 instance-stack
 instance-start
 instance-state
@@ -142,6 +148,8 @@ stack-validate
 stacks
 sts-assume-role
 subnets
+target-group-targets
+target-groups
 vpc-az-count
 vpc-azs
 vpc-default-delete
